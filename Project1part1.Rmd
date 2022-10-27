@@ -51,13 +51,33 @@ E(Y) = & \beta_0 + \sum_{j=1}^{22} \beta_j x_j + \beta_{10,3} x_{10}x_3 + \beta_
 & + \beta_{12,16} x_{12} x_{16} + \beta_{14,19} x_{14} x_{19} + \beta_{16,1} x_{16} x_1 + \beta_{19,1} x_{19} x_1
 \end{align*}
 
-The risk factors are represented by the explanatory variables $x_i$ and described below using the variable name on the easySHARE data guide.
+To write it more concisely
+\[
+E(\mathbf{Y}) = X \boldsymbol{\beta}
+\]
+where 
+\[
+X = \begin{pmatrix} 
+1 & x_{1,1} & x_{1,2} & \dots & x_{1,22} & x_{1,10} x_{1,3} & x_{1,5} x_{1,1} & \dots & x_{1,16} x_{1,1} & x_{1,19} x_{1,1} \\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+1 & x_{n,1} & x_{n,2} & \dots & x_{n,22} & x_{n,10} x_{n,3} & x_{n,5} x_{n,1} & \dots & x_{n,16} x_{n,1} & x_{n,19} x_{n,1}
+\end{pmatrix} 
+\]
+\[
+\boldsymbol{\beta} = \begin{pmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_{22} \\ \beta_{10,3} \\ \beta_{5,1} \\ \vdots \\ \beta_{16,1} \\ \beta_{19,1} \end{pmatrix}
+\]
+
+
+Here, for $n$ observations, $x_{i,j}$ represents the $i^{th}$ observation of the variable $x_j$ in the table below.
+
+The risk factors are represented by the explanatory variables $x_j$ and described below using the variable name on the easySHARE data guide.
+
 
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|p{4cm}|p{6cm}|}
 \hline
-$x_i$ & \textbf{Variable name} & \textbf{Description of variable}  & \textbf{Possible Values}\\
+$x_j$ & \textbf{Variable name} & \textbf{Description of variable}  & \textbf{Possible Values}\\
 \hline
 $x_1$ & age & Age of participant & range of positive values \\
 \hline
@@ -109,6 +129,7 @@ $x_{22}$ & isced1997\_r & Level of Education completed (ISCED-97 coding) &  Seco
 
 Note: $x_2$ to $x_{22}$ are categorical variables while $x_1=$ age is a continuous variable.
 
+Below is the summary of the data that we are using for the analysis of the model.
 
 ```{r Set-lists}
 # binary variables
@@ -201,12 +222,14 @@ summary(working_data)
 ```{r Box-Plots}
 
 boxplot(bmi ~ country_mod, data = working_data )
-par(mfrow = c(1,2))
+
 boxplot(bmi ~ adla, data = working_data)
-boxplot(bmi ~ maxgrip, data = working_data)
+
 ```
 
-Not: discuss boxplots (20-30 words?)
+From the boxplots, it is evident that although there isn't a major difference in the value of BMI in each country, there is a difference in the range of values. Austria and Germany seem to have a larger range of values than Netherlands and Sweden. It is also evident that there is not a large amount of variation in the BMI of those who have high mobility and those who have low mobility. However, it is worth noting that there is a larger range of values of BMI for those who have high mobility.  
+
+The initial model without separating the data by sex is shown below with its model assumptions.
 
 ```{r Model}
 mod <- bmi ~ . + country_mod:dn004_mod + mother_alive:age + female:chronic_mod +
@@ -225,9 +248,9 @@ plot(fit)
 
 
 
-Note: Discuss model assumptions here
+The residuals vs fitted plot shows a constant line at zero, justifying the assumption that the expectation is zero. The Normal Q-Q plot is positively skewed, suggesting that the model may be over-fitted. The Scale-Location plot shows only a very slight upwards trend, suggesting that the assumption of a constant variance is not far-fetched. The residuals vs leverage plot shows no data points with high residuals and high leverage, and most of the data points are very close to zero, suggesting that they all have a very similar impact on the model.
 
-# Display and interpret models for Males and Females
+The model summaries for both models are shown below.
 
 ```{r Sex-model, echo=FALSE}
 sex_mod <- bmi ~ . + country_mod:dn004_mod + mother_alive:age + br015_:age + 
@@ -264,7 +287,107 @@ better_female_fit <- step(fit_female)
 summary(better_female_fit)
 ```
 
-Note: put analysis and tables here
+After model selection, some explanatory variables for both the male and female models were removed, with there now being 18 common variables to both models, 6 and 7 variables being exclusive to males and females respectively.  The relationship between BMI and each of the variables for both males and females is shown in the tables below, where a positive or negative relationship shows that the value of the variable is proportional or inversely proportional respectively to the value of BMI. “Varying for different levels” suggests that each level of the variable may have a different relationship with BMI. 
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|p{4cm}|p{6cm}|}
+    \hline
+        \textbf{Variable Name} &  \textbf{Relationship (Male)} & \textbf{Relationship (Female)}\\
+        \hline
+        mother\_alive  & Negative & Negative \\
+        \hline
+        ever\_smoked & Negative & Negative \\
+        \hline
+        iv009\_mod & Positive & Positive \\
+        \hline
+        hhsize & Negative & Negative \\
+        \hline
+        chronic\_mod & Positive & Positive \\
+        \hline
+        adla & Positive & Positive \\
+        \hline
+        br015\_ & Positive & Positive \\
+        \hline
+        co007\_ & Negative & Negative \\
+        \hline
+        br010\_mod & Negative & Negative \\
+        \hline
+        maxgrip & Positive & Positive \\
+        \hline
+        sphus & Positive & Positive \\
+        \hline
+        isced1997\_r & Varying for different levels & Varying for different levels \\
+        \hline
+        age & Negative & Negative \\
+        \hline
+        country\_mod & Negative & Varying for different levels \\
+        \hline
+        ever\_smoked:co007\_ & Positive & Positive \\
+        \hline
+        br010\_mod:age & Positive & Positive \\
+        \hline
+        ever\_smoked:maxgrip & Positive & Positive \\
+        \hline
+        ever\_smoked:sphus & Negative & Negative \\
+        \hline
+    \end{tabular}
+    \label{tab:both}
+    \caption{The relationship between BMI and variables common between both sexes.}
+\end{table}
+
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|p{4cm}|p{6cm}|}
+    \hline
+         \textbf{Variable Name} & \textbf{Relationship}\\
+         \hline
+         partnerinhh & Positive\\
+         \hline
+         hc029\_ & Positive\\
+         \hline
+         eurod & Varying for different levels \\
+         \hline
+         mother\_alive:age & Positive \\
+         \hline
+         adla:age & Negative\\
+         \hline
+         hhsize:adla & Positive\\
+         \hline 
+    \end{tabular}
+    \caption{The relationship between BMI and the variables exclusive to males.}
+    \label{tab:male}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|p{4cm}|p{6cm}|}
+    \hline
+         \textbf{Variable Name} & \textbf{Relationship}\\
+         \hline
+         dn004\_mod & Positive\\
+         \hline
+         father\_alive & Negative\\
+         \hline
+         hc012\_ & Negative \\
+         \hline
+         ch001\_ & Positive \\
+         \hline
+         dn004\_mod:country\_mod & Negative\\
+         \hline
+         br015\_:age & Negative\\
+         \hline 
+         ch001\_:br010\_mod & Negative\\
+        \hline
+    \end{tabular}
+    \caption{The relationship between BMI and the variables exclusive to females.}
+    \label{tab:female}
+\end{table}
+
+Some variables did not show a very significant relationship with BMI, for example `country_mod`. However, when considering this variable in interactions with other variables, a significant relationship was present. Hence, the country where the interview was conducted may not have made a difference on its own, but it did have a significant impact on other variables such as `dn004_mod`. This was true for other variables as well, including `hhsize`. These variables could be considered as confounding variables.
+
+Corresponding to the tables above, the boxplots below help visualise the relationship between BMI and some of the explanatory variables.
 
 ```{r boxplots-analysis}
 chronic_plot <- ggplot(na.omit(working_data) %>% select(c(bmi, female, chronic_mod)) %>%
@@ -307,3 +430,24 @@ grid.arrange(chronic_plot, adla_plot, br010_plot, maxgrip_plot, sphus_plot,
              country_plot, nrow = 3)
 
 ```
+
+# COnclusion
+From the given data, there are some risk factors that affect both males and females, for example smoking habits, level of daily activity, number of chronic diseases, etc. However, some factors exclusively affect males, e.g. depression (EURO-D score) or their age in interaction with their daily activities. On the other hand, some factors exclusively affect females, e.g. number of children, or the amount of vigorous activities in interaction with their age.
+
+# Executive Summary
+When comparing the effect of different risk factors for males and females, it was evident that there is generally a difference in how each factor affects each sex. For example, males with a EURO-D score of 10 or higher were much more likely to have a smaller BMI than those who were less depressed, suggesting that depression may not have much of an impact on their BMI until it becomes significantly severe. On the other hand, there was no apparent relationship between BMI and severity of depression for females at all. The number of chronic illnesses that participants had from each sex seemed to increase their risk of obesity. In addition to this, participants who were generally more active and had a healthier lifestyle, and perceived themselves to be healthier may have a lower risk of being obese. Surprisingly, those who drank regularly had a lower chance of being obese. Participants from Austria and Germany generally had higher values of BMI on average than Netherlands and Sweden. Being able to make ends meet financially seemed to increase the risk of being obese for both males and females, with the risk being slightly higher for females. Some of this information is visually represented by the figures below.
+
+
+```{r echo=FALSE}
+co007_plot <- ggplot(na.omit(working_data) %>% select(c(bmi, female, co007_)) %>%
+         group_by("female"), 
+       aes(y=bmi, x=co007_)) +
+  geom_boxplot(aes(fill = female)) +
+  scale_fill_discrete(name = "Sex", labels = c("Male", "Female"))
+
+grid.arrange(co007_plot, adla_plot, br010_plot, maxgrip_plot, sphus_plot, 
+             country_plot, nrow = 3)
+```
+
+
+
