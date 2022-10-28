@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.12.21)  28 OCT 2022 11:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.12.21)  28 OCT 2022 12:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -634,30 +634,30 @@ File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[9]
-<Project1part1_files/figure-latex/present-boxplots-analysis-1.pdf, id=91, 634.3
+[9] [10]
+<Project1part1_files/figure-latex/present-boxplots-analysis-1.pdf, id=96, 634.3
 7pt x 569.12625pt>
 File: Project1part1_files/figure-latex/present-boxplots-analysis-1.pdf Graphic 
 file (type pdf)
 <use Project1part1_files/figure-latex/present-boxplots-analysis-1.pdf>
 Package pdftex.def Info: Project1part1_files/figure-latex/present-boxplots-anal
-ysis-1.pdf  used on input line 640.
+ysis-1.pdf  used on input line 642.
 (pdftex.def)             Requested size: 469.76523pt x 421.45078pt.
-[10] [11 <./Project1part1_files/figure-latex/present-boxplots-analysis-1.pdf>]
+[11 <./Project1part1_files/figure-latex/present-boxplots-analysis-1.pdf>]
 <Project1part1_files/figure-latex/exec-plots-1.pdf, id=111, 634.37pt x 569.1262
 5pt>
 File: Project1part1_files/figure-latex/exec-plots-1.pdf Graphic file (type pdf)
 
 <use Project1part1_files/figure-latex/exec-plots-1.pdf>
 Package pdftex.def Info: Project1part1_files/figure-latex/exec-plots-1.pdf  use
-d on input line 684.
+d on input line 686.
 (pdftex.def)             Requested size: 469.76523pt x 421.45078pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 688.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 690.
 [12 <./Project1part1_files/figure-latex/exec-plots-1.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 688.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 690.
 (./Project1part1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 688.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 688.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 690.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 690.
  ) 
 Here is how much of TeX's memory you used:
  13381 strings out of 480608
@@ -683,7 +683,7 @@ blic/lm/lmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmr
 r/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texl
 ive/2020/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2020/t
 exmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on Project1part1.pdf (12 pages, 4080147 bytes).
+Output written on Project1part1.pdf (12 pages, 4080883 bytes).
 PDF statistics:
  205 PDF objects out of 1000 (max. 8388607)
  165 compressed objects within 2 object streams

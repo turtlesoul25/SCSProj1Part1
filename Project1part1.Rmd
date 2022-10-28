@@ -368,7 +368,7 @@ options(width = 300)
 sum_better_female
 ```
 
-After performing model selection procedures, some explanatory variables for both the male and female models were removed, with there now being 18 common variables to both models, 6 and 7 variables being exclusive to males and females respectively.  The relationship between BMI and each of the variables for both males and females is shown in the tables below, where a positive or negative relationship shows that the value of the variable is proportional or inversely proportional respectively to the value of BMI. “Varying for different levels” suggests that each level of the variable may have a different relationship with BMI. 
+From the summaries above, the adjusted $R$-squared values for both models are low, but this is due to variability in the data. After performing model selection procedures, some explanatory variables for both the male and female models were removed, with there now being 18 common variables to both models, 6 and 7 variables being exclusive to males and females respectively.  The relationship between BMI and each of the variables for both males and females is shown in the tables below, where a positive or negative relationship shows that the value of the variable is proportional or inversely proportional respectively to the value of BMI. “Varying for different levels” suggests that each level of the variable may have a different relationship with BMI. 
 
 \begin{table}[!h]
     \centering
