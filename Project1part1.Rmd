@@ -25,6 +25,7 @@ suppressPackageStartupMessages(library("gridExtra"))
 suppressPackageStartupMessages(library("visdat"))
 suppressPackageStartupMessages(library("countrycode"))
 suppressPackageStartupMessages(library("ggplot2"))
+suppressPackageStartupMessages(library("knitr"))
 ```
 
 ```{r Load-data}
@@ -252,14 +253,16 @@ working_data$country_mod <- factor(working_data$country_mod)
 options(knitr.kable.NA = "")
 
 # Display summary statistics of chosen data using knitr
-knitr::kable(summary(working_data %>% select(all_of(factor_list))), border_left = T, border_right = T)
-knitr::kable(summary(working_data %>% select(c("hhsize", "iv009_mod", "sphus", "ch001_", "maxgrip", "adla", "br015_"))), border_left = T, border_right = T)
-knitr::kable(summary(working_data %>% select(c("br010_mod", "chronic_mod", "isced1997_r", "country_mod", "eurod"))), border_left = T, border_right = T)
-knitr::kable(summary(working_data %>% select(c("co007_", "age", "bmi"))), border_left = T, border_right = T)
+knitr::kable(summary(working_data %>% select(all_of(factor_list))))
+knitr::kable(summary(working_data %>% select(c("hhsize",  "sphus", 
+                                               "ch001_",  "adla", "br015_"))))
+knitr::kable(summary(working_data %>% select(c("br010_mod", "chronic_mod", "isced1997_r", "country_mod", "eurod"))))
+knitr::kable(summary(working_data %>% select(c("co007_", "maxgrip", "iv009_mod",
+                                               "age", "bmi")))) 
 ```
 
 
-The data above currently contains `NA`s which are filtered out while constructing the male and female models. 
+The data above contains `NA`s which were filtered out while constructing the male and female models. 
 
 \newpage
 ```{r Box-Plots-countries, fig.height=7.5, fig.width=6.5, fig.cap="BMI varying across Countries and daily living activities"}
