@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.12.21)  28 OCT 2022 09:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.12.21)  28 OCT 2022 10:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -535,23 +535,23 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 {/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 90.
+(Font)              <10> on input line 95.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 90.
+(Font)              <7> on input line 95.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 90.
+(Font)              <5> on input line 95.
 
-Underfull \hbox (badness 10000) in paragraph at lines 151--151
+Underfull \hbox (badness 10000) in paragraph at lines 156--156
 []|\T1/lmr/m/n/10 (+20) Living with
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 165--166
+Underfull \hbox (badness 10000) in paragraph at lines 170--171
 []|\T1/lmr/m/n/10 (+20) City_sub = City or sub-urbs;
  []
 
 
-Underfull \hbox (badness 5077) in paragraph at lines 165--166
+Underfull \hbox (badness 5077) in paragraph at lines 170--171
 \T1/lmr/m/n/10 (+20) Town_rural = Small/Large towns
  []
 
@@ -559,72 +559,72 @@ Underfull \hbox (badness 5077) in paragraph at lines 165--166
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [2] [3]
-Overfull \hbox (8.89735pt too wide) in paragraph at lines 219--220
+Overfull \hbox (8.89735pt too wide) in paragraph at lines 224--225
 []\T1/lmr/m/n/10 (-20) dn004_mod  
  []
 
 
-Overfull \hbox (3.96825pt too wide) in paragraph at lines 221--222
+Overfull \hbox (3.96825pt too wide) in paragraph at lines 226--227
 []\T1/lmr/m/n/10 (-20) partnerinhh  
  []
 
 
-Overfull \hbox (6.8517pt too wide) in paragraph at lines 223--224
+Overfull \hbox (6.8517pt too wide) in paragraph at lines 228--229
 []\T1/lmr/m/n/10 (-20) mother_alive  
  []
 
 
-Overfull \hbox (1.67975pt too wide) in paragraph at lines 225--226
+Overfull \hbox (1.67975pt too wide) in paragraph at lines 230--231
 []\T1/lmr/m/n/10 (-20) father_alive  
  []
 
 
-Overfull \hbox (9.70142pt too wide) in paragraph at lines 227--228
+Overfull \hbox (9.70142pt too wide) in paragraph at lines 232--233
 []\T1/lmr/m/n/10 (-20) ever_smoked  
  []
 
 
-Overfull \hbox (3.01393pt too wide) in paragraph at lines 237--237
+Overfull \hbox (3.01393pt too wide) in paragraph at lines 242--242
 []|\T1/lmr/m/n/10 (-20) Yes:10270|  
  []
 
 
-Overfull \hbox (1.31006pt too wide) in paragraph at lines 264--265
+Overfull \hbox (1.31006pt too wide) in paragraph at lines 269--270
 []\T1/lmr/m/n/10 (-20) maxgrip  
  []
 
 
-Overfull \hbox (21.19017pt too wide) in paragraph at lines 274--274
+Overfull \hbox (21.19017pt too wide) in paragraph at lines 279--279
 []|\T1/lmr/m/n/10 (-20) Town_rural:12715|  
  []
 
 
-Overfull \hbox (8.90515pt too wide) in paragraph at lines 275--275
+Overfull \hbox (8.90515pt too wide) in paragraph at lines 280--280
 []|\T1/lmr/m/n/10 (-20) High:7698|  
  []
 
 
-Overfull \hbox (9.77638pt too wide) in paragraph at lines 276--276
+Overfull \hbox (9.77638pt too wide) in paragraph at lines 281--281
 []|\T1/lmr/m/n/10 (-20) NA's:1254|  
  []
 
 
-Overfull \hbox (9.18445pt too wide) in paragraph at lines 293--294
+Overfull \hbox (9.18445pt too wide) in paragraph at lines 298--299
 []\T1/lmr/m/n/10 (-20) chronic_mod  
  []
 
 
-Overfull \hbox (4.37773pt too wide) in paragraph at lines 305--305
+Overfull \hbox (4.37773pt too wide) in paragraph at lines 310--310
 []|\T1/lmr/m/n/10 (-20) Occasionally:7320|  
  []
 
 
-Overfull \hbox (6.2471pt too wide) in paragraph at lines 307--307
+Overfull \hbox (6.2471pt too wide) in paragraph at lines 312--312
 []|\T1/lmr/m/n/10 (-20) Netherlands:4165|  
  []
 
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 3
-30.
+35.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [4]
@@ -634,7 +634,7 @@ File: Project1part1_files/figure-latex/Box-Plots-countries-1.pdf Graphic file (
 type pdf)
 <use Project1part1_files/figure-latex/Box-Plots-countries-1.pdf>
 Package pdftex.def Info: Project1part1_files/figure-latex/Box-Plots-countries-1
-.pdf  used on input line 337.
+.pdf  used on input line 342.
 (pdftex.def)             Requested size: 436.63019pt x 468.75009pt.
 [5 <./Project1part1_files/figure-latex/Box-Plots-countries-1.pdf>]
 <Project1part1_files/figure-latex/Main-Model-1.pdf, id=58, 457.71pt x 316.18124
@@ -643,11 +643,11 @@ File: Project1part1_files/figure-latex/Main-Model-1.pdf Graphic file (type pdf)
 
 <use Project1part1_files/figure-latex/Main-Model-1.pdf>
 Package pdftex.def Info: Project1part1_files/figure-latex/Main-Model-1.pdf  use
-d on input line 357.
+d on input line 362.
 (pdftex.def)             Requested size: 457.72984pt x 316.19493pt.
 [6 <./Project1part1_files/figure-latex/Main-Model-1.pdf>]
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-436.
+441.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [7] [8]
@@ -660,28 +660,28 @@ File: Project1part1_files/figure-latex/present-boxplots-analysis-1.pdf Graphic
 file (type pdf)
 <use Project1part1_files/figure-latex/present-boxplots-analysis-1.pdf>
 Package pdftex.def Info: Project1part1_files/figure-latex/present-boxplots-anal
-ysis-1.pdf  used on input line 620.
+ysis-1.pdf  used on input line 625.
 (pdftex.def)             Requested size: 469.76523pt x 421.45078pt.
 [9] [10] [11 <./Project1part1_files/figure-latex/present-boxplots-analysis-1.pd
 f>]
-<Project1part1_files/figure-latex/unnamed-chunk-1-1.pdf, id=111, 634.37pt x 569
-.12625pt>
-File: Project1part1_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (type
- pdf)
-<use Project1part1_files/figure-latex/unnamed-chunk-1-1.pdf>
-Package pdftex.def Info: Project1part1_files/figure-latex/unnamed-chunk-1-1.pdf
-  used on input line 664.
+<Project1part1_files/figure-latex/exec-plots-1.pdf, id=111, 634.37pt x 569.1262
+5pt>
+File: Project1part1_files/figure-latex/exec-plots-1.pdf Graphic file (type pdf)
+
+<use Project1part1_files/figure-latex/exec-plots-1.pdf>
+Package pdftex.def Info: Project1part1_files/figure-latex/exec-plots-1.pdf  use
+d on input line 669.
 (pdftex.def)             Requested size: 469.76523pt x 421.45078pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 668.
-[12 <./Project1part1_files/figure-latex/unnamed-chunk-1-1.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 668.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 673.
+[12 <./Project1part1_files/figure-latex/exec-plots-1.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 673.
 (./Project1part1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 668.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 668.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 673.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 673.
  ) 
 Here is how much of TeX's memory you used:
  13375 strings out of 480608
- 196603 string characters out of 5903629
+ 196573 string characters out of 5903629
  497608 words of memory out of 5000000
  28922 multiletter control sequences out of 15000+600000
  594853 words of font info for 108 fonts, out of 8000000 for 9000
@@ -703,7 +703,7 @@ blic/lm/lmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmr
 r/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texl
 ive/2020/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2020/t
 exmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on Project1part1.pdf (12 pages, 4079947 bytes).
+Output written on Project1part1.pdf (12 pages, 4080233 bytes).
 PDF statistics:
  205 PDF objects out of 1000 (max. 8388607)
  165 compressed objects within 2 object streams

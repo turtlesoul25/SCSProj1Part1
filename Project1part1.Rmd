@@ -7,7 +7,7 @@ output:
   html_document: default
 ---
 
-Note: include para about work done by each participant
+This project had equal contributions from all members. All 3 members sorted and cleaned the data together along with building the model. Mayez and Georgia refined the models to choose the most suitable one. Niharika wrote the code for box plots and other plots in the project. Georgia and Mayez wrote the analysis of the models while Niharika defined the model and formatted the document.
 
 \newpage
 # Introduction
@@ -34,7 +34,7 @@ data <- easySHARE_rel8_0_0
 ```
 
 ```{r fix-missing-data}
-# Set missing values to NA
+# Set missing values to NA       
 data[data < 0] <- NA
 
 # Replace country codes with country names
@@ -249,13 +249,13 @@ working_data <- data %>%
 # Setting factor levels for the countries in the data
 working_data$country_mod <- factor(working_data$country_mod)
 
-options(knitr.kable.NA = '')
+options(knitr.kable.NA = "")
 
 # Display summary statistics of chosen data using knitr
-knitr::kable(summary(working_data %>% select(all_of(factor_list))))
-knitr::kable(summary(working_data %>% select(c("hhsize", "iv009_mod", "sphus", "ch001_", "maxgrip", "adla", "br015_"))))
-knitr::kable(summary(working_data %>% select(c("br010_mod", "chronic_mod", "isced1997_r", "country_mod", "eurod"))))
-knitr::kable(summary(working_data %>% select(c("co007_", "age", "bmi"))))
+knitr::kable(summary(working_data %>% select(all_of(factor_list))), border_left = T, border_right = T)
+knitr::kable(summary(working_data %>% select(c("hhsize", "iv009_mod", "sphus", "ch001_", "maxgrip", "adla", "br015_"))), border_left = T, border_right = T)
+knitr::kable(summary(working_data %>% select(c("br010_mod", "chronic_mod", "isced1997_r", "country_mod", "eurod"))), border_left = T, border_right = T)
+knitr::kable(summary(working_data %>% select(c("co007_", "age", "bmi"))), border_left = T, border_right = T)
 ```
 
 
@@ -263,13 +263,14 @@ The data above currently contains `NA`s which are filtered out while constructin
 
 \newpage
 ```{r Box-Plots-countries, fig.height=7.5, fig.width=6.5, fig.cap="BMI varying across Countries and daily living activities"}
-par(mfrow = c(2,1))
-# Box plots to show how BMI varies across countries 
+par(mfrow = c(2, 1))
+# Box plots to show how BMI varies across countries
 boxplot(bmi ~ country_mod, data = working_data, xlab = "Countries", ylab = "BMI")
 # Box plots to show how BMI varies across levels of daily activity
-boxplot(bmi ~ adla, data = working_data, 
-        xlab = "Activities of Daily Living index", ylab = "BMI")
-
+boxplot(bmi ~ adla,
+  data = working_data,
+  xlab = "Activities of Daily Living index", ylab = "BMI"
+)
 ```
 
 
@@ -298,12 +299,12 @@ The residuals vs fitted plot shows a constant line at zero, justifying the assum
 
 
 
-```{r model-male-female, echo=FALSE}
+```{r model-male-female}
 # Define the model formula for each sex
 # Note: this model does not include the interaction terms that were in the main
 # model as this is applied to each sex separately
 sex_mod <- bmi ~ . + country_mod:dn004_mod + mother_alive:age + br015_:age +
-  ever_smoked:co007_ + adla:age + br010_mod:age + ever_smoked:maxgrip + 
+  ever_smoked:co007_ + adla:age + br010_mod:age + ever_smoked:maxgrip +
   ever_smoked:sphus + hhsize:adla + ch001_:br010_mod
 ```
 
@@ -330,7 +331,7 @@ sum_better_male$coefficients <- round(sum_better_male$coefficients, 2)
 ```
 
 
-```{r male summary, out.width="100%"}
+```{r male-summary, out.width="100%"}
 # Display summary statistics of model for males
 options(width = 300)
 sum_better_male
@@ -358,7 +359,7 @@ sum_better_female$coefficients <- round(sum_better_female$coefficients, 2)
 ```
 
 
-```{r female-summary, echo=FALSE}
+```{r female-summary}
 # Display summary statistics of model for females
 options(width = 300)
 sum_better_female
@@ -555,7 +556,7 @@ From the given data, there are some risk factors that affect both males and fema
 This report illustrates some of the risk factors associated with obesity with BMI as a measure. The data includes participants from four countries - Austria, Netherlands, Germany and Sweden. When comparing the effect of different risk factors for males and females, it was evident that there is generally a difference in how each factor affects each sex. For example, males with a EURO-D score of 10 or higher were much more likely to have a smaller BMI than those who were less depressed, suggesting that depression may not have much of an impact on their BMI until it becomes significantly severe. On the other hand, there was no apparent relationship between BMI and severity of depression for females at all. The number of chronic illnesses that participants had from each sex seemed to increase their risk of obesity. In addition to this, participants who were generally more active and had a healthier lifestyle, and perceived themselves to be healthier may have a lower risk of being obese. Surprisingly, those who drank regularly had a lower chance of being obese. Participants from Austria and Germany generally had higher values of BMI on average than Netherlands and Sweden. Being able to make ends meet financially seemed to increase the risk of being obese for both males and females, with the risk being slightly higher for females. Some of this information is visually represented by Figure 4.
 
 
-```{r echo=FALSE, fig.height=8, fig.width=9, fig.cap="Possible risk factors of obsesity"}
+```{r exec-plots, fig.height=8, fig.width=9, fig.cap="Possible risk factors of obsesity"}
 # Ability to make ends meet
 co007_plot <- ggplot(
   na.omit(working_data) %>% select(c(bmi, female, co007_)) %>%
@@ -563,7 +564,7 @@ co007_plot <- ggplot(
   aes(y = bmi, x = co007_)
 ) +
   geom_boxplot(aes(fill = female)) +
-  xlab("Able to make ends meet") + 
+  xlab("Able to make ends meet") +
   ylab("BMI") +
   scale_fill_discrete(name = "Sex", labels = c("Male", "Female"))
 
@@ -572,5 +573,4 @@ grid.arrange(chronic_plot, adla_plot, br010_plot, sphus_plot,
   co007_plot, country_plot,
   nrow = 3
 )
-
 ```
