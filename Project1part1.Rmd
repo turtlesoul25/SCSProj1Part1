@@ -9,6 +9,7 @@ output:
 
 Note: include para about work done by each participant
 
+\newpage
 # Introduction
 
 The easySHARE data (https://tinyurl.com/wud2ynbs) is in the form of panel data. This report aims to analyse the data and investigate which risk factors have a significant impact on the participants’ BMI, and how these risk factors may affect men and women differently. The data was collected in different waves at different points in time, leading to some individuals participating in the study multiple times, and the questions asked were slightly different for each wave. To reduce repeating entries and to simplify the data that was analysed, this report focuses on wave 5 carried out in four countries - Austria, Germany, Netherlands, and Sweden - chosen arbitrarily.
@@ -233,8 +234,9 @@ levels(data$maxgrip) <- list(
 )
 ```
 
-Below is the summary of the data that we are using for the analysis of the model.
 
+\newpage
+Below is the summary of the data that was used for the analysis of the model.
 
 
 ```{r setting-up-data}
@@ -257,27 +259,26 @@ knitr::kable(summary(working_data %>% select(c("co007_", "age", "bmi"))))
 ```
 
 
-The data above contains NAs as we filter this out while constructing the male and female models. 
+The data above currently contains `NA`s which are filtered out while constructing the male and female models. 
 
-
-
-```{r Box-Plots-countries, fig.align='center', fig.height=4, fig.width=6, fig.cap="BMI varying across Countries"}
-# Box plots to show how BMI varies across countries
+\newpage
+```{r Box-Plots-countries, fig.height=7.5, fig.width=6.5, fig.cap="BMI varying across Countries and daily living activities"}
+par(mfrow = c(2,1))
+# Box plots to show how BMI varies across countries 
 boxplot(bmi ~ country_mod, data = working_data, xlab = "Countries", ylab = "BMI")
-```
-
-
-```{r Box-Plots-adla, fig.height=4, fig.width=6, fig.cap="BMI varying with Activities of Daily Living"}
-# Box plot to show how BMI varies with Daily living activities
+# Box plots to show how BMI varies across levels of daily activity
 boxplot(bmi ~ adla, data = working_data, 
         xlab = "Activities of Daily Living index", ylab = "BMI")
+
 ```
 
-From the boxplots in Figures 1 and 2, it is evident that although there isn't a major difference in the value of BMI in each country, there is a difference in the range of values. Austria and Germany seem to have a larger range of values than Netherlands and Sweden. It is also evident that there is not a large amount of variation in the BMI of those who have high mobility and those who have low mobility. However, it is worth noting that there is a larger range of values of BMI for those who have high mobility.  
 
-The model assumptions of the initial model without separating the data by sex is displayed in Figure 2.
+From the boxplots in Figure 1, it is evident that although there isn't a major difference in the value of BMI in each country, there is a difference in the range of values. Austria and Germany seem to have a larger range of values than Netherlands and Sweden. It is also evident that there is not a large amount of variation in the BMI of those who have high mobility and those who have low mobility. However, it is worth noting that there is a larger range of values of BMI for those who have high mobility.  
 
-```{r Main-Model, fig.height=5.5, fig.width=6.5, fig.align='center', fig.cap="Checking Model Assumptions for Defined Model"}
+\newpage 
+The model assumptions of the initial model without separating the data by sex are displayed in Figure 2.
+
+```{r Main-Model, fig.height=5, fig.width=6.5, fig.align='center', fig.cap="Model assumptions for the defined model"}
 # Define model formula that applies to both will be applied to both males and females
 mod <- bmi ~ . + country_mod:dn004_mod + mother_alive:age + female:chronic_mod +
   female:adla + female:br010_mod + br015_:age + ever_smoked:co007_ +
@@ -293,7 +294,6 @@ plot(fit)
 ```
 
 
-
 The residuals vs fitted plot shows a constant line at zero, justifying the assumption that the expectation is zero. The Normal Q-Q plot is positively skewed, suggesting that the model may be over-fitted. The Scale-Location plot shows only a very slight upwards trend, suggesting that the assumption of a constant variance is not far-fetched. The residuals vs leverage plot shows no data points with high residuals and high leverage, and most of the data points are very close to zero, suggesting that they all have a very similar impact on the model.
 
 
@@ -307,7 +307,7 @@ sex_mod <- bmi ~ . + country_mod:dn004_mod + mother_alive:age + br015_:age +
   ever_smoked:sphus + hhsize:adla + ch001_:br010_mod
 ```
 
-We now look at the model applied to males and females separately. The model summaries for both models are shown below after model selection.
+Now, the separate models for males and females may be examined. The summaries for the male and female models are show below.
 
 \newpage
 
@@ -364,7 +364,7 @@ options(width = 300)
 sum_better_female
 ```
 
-After model selection, some explanatory variables for both the male and female models were removed, with there now being 18 common variables to both models, 6 and 7 variables being exclusive to males and females respectively.  The relationship between BMI and each of the variables for both males and females is shown in the tables below, where a positive or negative relationship shows that the value of the variable is proportional or inversely proportional respectively to the value of BMI. “Varying for different levels” suggests that each level of the variable may have a different relationship with BMI. 
+After performing model selection procedures, some explanatory variables for both the male and female models were removed, with there now being 18 common variables to both models, 6 and 7 variables being exclusive to males and females respectively.  The relationship between BMI and each of the variables for both males and females is shown in the tables below, where a positive or negative relationship shows that the value of the variable is proportional or inversely proportional respectively to the value of BMI. “Varying for different levels” suggests that each level of the variable may have a different relationship with BMI. 
 
 \begin{table}[!h]
     \centering
@@ -464,7 +464,7 @@ After model selection, some explanatory variables for both the male and female m
 
 Some variables did not show a very significant relationship with BMI, for example `country_mod`. However, when considering this variable in interactions with other variables, a significant relationship was present. Hence, the country where the interview was conducted may not have made a difference on its own, but it did have a significant impact on other variables such as `dn004_mod`. This was true for other variables as well, including `hhsize`. These variables could be considered as confounding variables.
 
-Corresponding to the tables above, the boxplots below help visualise the relationship between BMI and some of the explanatory variables.
+Corresponding to the tables above, the boxplots below (in Figure 3) help visualise the relationship between BMI and some of the explanatory variables.
 
 ```{r boxplot-analysis}
 # Plot potential risk factors against BMI for males and females separately
@@ -537,7 +537,7 @@ country_plot <- ggplot(
 ```
 
 
-```{r present-boxplots-analysis, fig.height=8, fig.width=8, fig.cap="Possible risk factors of obsesity varying with BMI"}
+```{r present-boxplots-analysis, fig.height=8, fig.width=9, fig.cap="Potential risk factors of obsesity varying with BMI"}
 
 # Present plots together
 grid.arrange(chronic_plot, adla_plot, br010_plot, maxgrip_plot, sphus_plot,
@@ -546,14 +546,16 @@ grid.arrange(chronic_plot, adla_plot, br010_plot, maxgrip_plot, sphus_plot,
 )
 ```
 
+
 # Conclusion
 From the given data, there are some risk factors that affect both males and females, for example smoking habits, level of daily activity, number of chronic diseases, etc. However, some factors exclusively affect males, e.g. depression (EURO-D score) or their age in interaction with their daily activities. On the other hand, some factors exclusively affect females, e.g. number of children, or the amount of vigorous activities in interaction with their age.
 
+\newpage
 # Executive Summary
-When comparing the effect of different risk factors for males and females, it was evident that there is generally a difference in how each factor affects each sex. For example, males with a EURO-D score of 10 or higher were much more likely to have a smaller BMI than those who were less depressed, suggesting that depression may not have much of an impact on their BMI until it becomes significantly severe. On the other hand, there was no apparent relationship between BMI and severity of depression for females at all. The number of chronic illnesses that participants had from each sex seemed to increase their risk of obesity. In addition to this, participants who were generally more active and had a healthier lifestyle, and perceived themselves to be healthier may have a lower risk of being obese. Surprisingly, those who drank regularly had a lower chance of being obese. Participants from Austria and Germany generally had higher values of BMI on average than Netherlands and Sweden. Being able to make ends meet financially seemed to increase the risk of being obese for both males and females, with the risk being slightly higher for females. Some of this information is visually represented by the figures below.
+This report illustrates some of the risk factors associated with obesity with BMI as a measure. The data includes participants from four countries - Austria, Netherlands, Germany and Sweden. When comparing the effect of different risk factors for males and females, it was evident that there is generally a difference in how each factor affects each sex. For example, males with a EURO-D score of 10 or higher were much more likely to have a smaller BMI than those who were less depressed, suggesting that depression may not have much of an impact on their BMI until it becomes significantly severe. On the other hand, there was no apparent relationship between BMI and severity of depression for females at all. The number of chronic illnesses that participants had from each sex seemed to increase their risk of obesity. In addition to this, participants who were generally more active and had a healthier lifestyle, and perceived themselves to be healthier may have a lower risk of being obese. Surprisingly, those who drank regularly had a lower chance of being obese. Participants from Austria and Germany generally had higher values of BMI on average than Netherlands and Sweden. Being able to make ends meet financially seemed to increase the risk of being obese for both males and females, with the risk being slightly higher for females. Some of this information is visually represented by Figure 4.
 
 
-```{r echo=FALSE, fig.height=8, fig.width=8, fig.cap="Possible risk factors of obsesity"}
+```{r echo=FALSE, fig.height=8, fig.width=9, fig.cap="Possible risk factors of obsesity"}
 # Ability to make ends meet
 co007_plot <- ggplot(
   na.omit(working_data) %>% select(c(bmi, female, co007_)) %>%
@@ -561,6 +563,8 @@ co007_plot <- ggplot(
   aes(y = bmi, x = co007_)
 ) +
   geom_boxplot(aes(fill = female)) +
+  xlab("Able to make ends meet") + 
+  ylab("BMI") +
   scale_fill_discrete(name = "Sex", labels = c("Male", "Female"))
 
 # Present plots for executive summary
