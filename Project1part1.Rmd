@@ -1,11 +1,13 @@
 ---
-title: "SCS Project 1 part 1"
+title: "Stastical Case Studies Project 1 part 1"
 author: "Georgia Ettles, Mayez Haris and Niharika Peddinenikalva"
-date: '2022-10-13'
+date: '2022-10-28'
 output:
   pdf_document: default
   html_document: default
 ---
+
+Note: include para about work done by each participant
 
 # Introduction
 
@@ -14,15 +16,14 @@ The easySHARE data (https://tinyurl.com/wud2ynbs) is in the form of panel data. 
 The data has 18749 observations, with 8479 men and 10270 women, and the average participants are aged 66 (since the youngest participant was aged 30). The interviews for cities and suburbs had 28.15% of participants.  32.45% participants have graduated secondary school, 80.5% of the participants are able to make ends meet and 94.45% of the participants live in a household of 4 or fewer members. Also, 66.56% of the participants have 0-2 children. 97.37% participants have higher mobility according to the Activities of Daily living index while 57.99% frequently perform vigorous activities. The average BMI of the participants is 26.62. This is in the overweight range.
 
 
-```{r setup, echo=FALSE}
+```{r setup, echo=FALSE, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-# install.packages(c("ggplot2", "tidyverse", "gridExtra", "countrycode", "visdat"), 
-#                 dependencies = TRUE)
 suppressPackageStartupMessages(library("tidyverse"))
 suppressPackageStartupMessages(library("dplyr"))
 suppressPackageStartupMessages(library("gridExtra"))
 suppressPackageStartupMessages(library("visdat"))
 suppressPackageStartupMessages(library("countrycode"))
+suppressPackageStartupMessages(library("ggplot2"))
 ```
 
 ```{r Load-data}
@@ -36,14 +37,16 @@ data <- easySHARE_rel8_0_0
 data[data < 0] <- NA
 
 # Replace country codes with country names
-data$country_mod <- countrycode(factor(data$country_mod), origin = "iso3n", 
-                                destination = "country.name")
+data$country_mod <- countrycode(factor(data$country_mod),
+  origin = "iso3n",
+  destination = "country.name"
+)
 ```
 
 
-# Modelling
+# Defining Model and Checking Model Assumptions
 
-We consider the model below to explore risk factors of obesity:
+We consider the model below to explore risk factors of obesity. Let, for $n$ observations, $x_{i,j}$ represent the $i = 1, 2, \dots, n$ observation of the variable $x_j$ in the table below. The risk factors are represented by the explanatory variables $x_j$ and described in Table 1 using the variable name on the easySHARE data guide.
 
 \begin{align*}
 E(Y) = & \beta_0 + \sum_{j=1}^{22} \beta_j x_j + \beta_{10,3} x_{10}x_3 + \beta_{5,1} x_5 x_1 + \beta_{2,15} x_2 x_{15} + \beta_{2,16} x_2 x_{16} \\
@@ -51,29 +54,22 @@ E(Y) = & \beta_0 + \sum_{j=1}^{22} \beta_j x_j + \beta_{10,3} x_{10}x_3 + \beta_
 & + \beta_{12,16} x_{12} x_{16} + \beta_{14,19} x_{14} x_{19} + \beta_{16,1} x_{16} x_1 + \beta_{19,1} x_{19} x_1
 \end{align*}
 
-To write it more concisely
 \[
-E(\mathbf{Y}) = X \boldsymbol{\beta}
+\implies E(\mathbf{Y}) = X \boldsymbol{\beta}, \text{where}
 \]
-where 
 \[
 X = \begin{pmatrix} 
 1 & x_{1,1} & x_{1,2} & \dots & x_{1,22} & x_{1,10} x_{1,3} & x_{1,5} x_{1,1} & \dots & x_{1,16} x_{1,1} & x_{1,19} x_{1,1} \\
 \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
 1 & x_{n,1} & x_{n,2} & \dots & x_{n,22} & x_{n,10} x_{n,3} & x_{n,5} x_{n,1} & \dots & x_{n,16} x_{n,1} & x_{n,19} x_{n,1}
-\end{pmatrix} 
-\]
-\[
+\end{pmatrix} \text{ and } \quad 
 \boldsymbol{\beta} = \begin{pmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_{22} \\ \beta_{10,3} \\ \beta_{5,1} \\ \vdots \\ \beta_{16,1} \\ \beta_{19,1} \end{pmatrix}
 \]
 
 
-Here, for $n$ observations, $x_{i,j}$ represents the $i^{th}$ observation of the variable $x_j$ in the table below.
 
-The risk factors are represented by the explanatory variables $x_j$ and described below using the variable name on the easySHARE data guide.
-
-
-\begin{table}[h!]
+```{=latex}
+\begin{table}[!h]
 \centering
 \begin{tabular}{|c|c|p{4cm}|p{6cm}|}
 \hline
@@ -125,34 +121,42 @@ $x_{22}$ & isced1997\_r & Level of Education completed (ISCED-97 coding) &  Seco
 \hline
 
 \end{tabular}
+\caption{List of explanatory variables}
 \end{table}
+```
+\newpage
 
 Note: $x_2$ to $x_{22}$ are categorical variables while $x_1=$ age is a continuous variable.
 
-Below is the summary of the data that we are using for the analysis of the model.
 
 ```{r Set-lists}
 # binary variables
-factor_list <- c("female", "dn004_mod",
-                 "partnerinhh", "mother_alive", "father_alive", "ever_smoked",
-                 "hc012_","hc029_")
+factor_list <- c(
+  "female", "dn004_mod",
+  "partnerinhh", "mother_alive", "father_alive", "ever_smoked",
+  "hc012_", "hc029_"
+)
 
 # variables with more than two levels
-ordered_list <-  c("iv009_mod", "hhsize", "eurod", 
-                  "ch001_", "chronic_mod", "adla", "br015_", "co007_", 
-                  "br010_mod", "maxgrip", "sphus", "isced1997_r")
+ordered_list <- c(
+  "iv009_mod", "hhsize", "eurod",
+  "ch001_", "chronic_mod", "adla", "br015_", "co007_",
+  "br010_mod", "maxgrip", "sphus", "isced1997_r"
+)
 
 # continuous variables
-nonfactor_list <- c("age","country_mod")
-
+nonfactor_list <- c("age", "country_mod")
 ```
 
 ```{r factor-levels}
 # Factoring binary variables as dummy variables
 for (column in factor_list) {
-  if (column != "hc029_") {data[, column] <- ifelse(data[, column] == "1", 1, 0)}
-  else {data$hc029_ <- ifelse(data[, column] == "5", 0, 1)}
-  data[, column] <- factor(data[, column], levels = c(0,1), labels = c("No", "Yes"))
+  if (column != "hc029_") {
+    data[, column] <- ifelse(data[, column] == "1", 1, 0)
+  } else {
+    data$hc029_ <- ifelse(data[, column] == "5", 0, 1)
+  }
+  data[, column] <- factor(data[, column], levels = c(0, 1), labels = c("No", "Yes"))
 }
 
 
@@ -162,87 +166,129 @@ for (column in ordered_list) {
 }
 
 # Simplifying levels for specific variables
-levels(data$isced1997_r) <- list("Secondary and Below" = as.character(0:3), 
-                                 "Post Secondary" = as.character(4:6), 
-                                 "Other" = as.character(95:96))
+levels(data$isced1997_r) <- list(
+  "Secondary and Below" = as.character(0:3),
+  "Post Secondary" = as.character(4:6),
+  "Other" = as.character(95:96)
+)
 
-levels(data$eurod) <- list("Not Depressed" = as.character(0:3), 
-                           "Somewhat Depressed" = as.character(4:6), 
-                           "Relatively Depressed" = as.character(7:9),
-                           "Very Depressed" = as.character(10:12))
+levels(data$eurod) <- list(
+  "Not Depressed" = as.character(0:3),
+  "Somewhat Depressed" = as.character(4:6),
+  "Relatively Depressed" = as.character(7:9),
+  "Very Depressed" = as.character(10:12)
+)
 
-levels(data$hhsize) <- list("Up to 4" = as.character(1:4), 
-                            "More than 4" = as.character(c(4:12, 14:15)))
+levels(data$hhsize) <- list(
+  "Up to 4" = as.character(1:4),
+  "More than 4" = as.character(c(4:12, 14:15))
+)
 
 
-levels(data$iv009_mod) <- list("City_sub" = as.character(1:2),
-                             "Town_rural" = as.character(3:5))
+levels(data$iv009_mod) <- list(
+  "City_sub" = as.character(1:2),
+  "Town_rural" = as.character(3:5)
+)
 
-levels(data$sphus) <- list("Good" = as.character(1:3),
-                             "Not Good" = as.character(4:5))
+levels(data$sphus) <- list(
+  "Good" = as.character(1:3),
+  "Not Good" = as.character(4:5)
+)
 
-levels(data$ch001_) <- list("Up to 2" = as.character(0:2),
-                             "More than 2" = as.character(3:19))
+levels(data$ch001_) <- list(
+  "Up to 2" = as.character(0:2),
+  "More than 2" = as.character(3:19)
+)
 
-levels(data$chronic_mod) <- list("0" = as.character(0),
-                             "1-3" = as.character(1:3),
-                             "4-10" = as.character(4:10))
+levels(data$chronic_mod) <- list(
+  "0" = as.character(0),
+  "1-3" = as.character(1:3),
+  "4-10" = as.character(4:10)
+)
 
-levels(data$adla) <- list("High Mobility" = as.character(0:2),
-                                  "Low Mobility" = as.character(3:5))
+levels(data$adla) <- list(
+  "High Mobility" = as.character(0:2),
+  "Low Mobility" = as.character(3:5)
+)
 
-levels(data$br015_) <- list("Often" = as.character(1:2),
-                            "Rarely" =  as.character(3:4))
+levels(data$br015_) <- list(
+  "Often" = as.character(1:2),
+  "Rarely" = as.character(3:4)
+)
 
-levels(data$co007_) <- list("With Difficulty" = as.character(1:2),
-                                    "Relatively easily" = as.character(3:4))
+levels(data$co007_) <- list(
+  "With Difficulty" = as.character(1:2),
+  "Relatively easily" = as.character(3:4)
+)
 
-levels(data$br010_mod) <- list("Rarely" = as.character(1:2),
-                                       "Occasionally" = as.character(3:4),
-                                       "Regularly" = as.character(5:7))
+levels(data$br010_mod) <- list(
+  "Rarely" = as.character(1:2),
+  "Occasionally" = as.character(3:4),
+  "Regularly" = as.character(5:7)
+)
 
-levels(data$maxgrip) <- list("Low" = as.character(1:35),
-                             "High" = as.character(36:99))
-
+levels(data$maxgrip) <- list(
+  "Low" = as.character(1:35),
+  "High" = as.character(36:99)
+)
 ```
+
+Below is the summary of the data that we are using for the analysis of the model.
+
 
 
 ```{r setting-up-data}
-# Setting up data to analyse
-working_data <- data %>% 
+# Setting up data to analyse choosing the 5th wave and 4 countries
+working_data <- data %>%
   filter(wave %in% c(5)) %>%
   filter(country_mod %in% c("Austria", "Germany", "Netherlands", "Sweden")) %>%
   select(all_of(c(factor_list, ordered_list, nonfactor_list)), "bmi")
 
+# Setting factor levels for the countries in the data
 working_data$country_mod <- factor(working_data$country_mod)
 
-summary(working_data)
+options(knitr.kable.NA = '')
+
+# Display summary statistics of chosen data using knitr
+knitr::kable(summary(working_data %>% select(all_of(factor_list))))
+knitr::kable(summary(working_data %>% select(c("hhsize", "iv009_mod", "sphus", "ch001_", "maxgrip", "adla", "br015_"))))
+knitr::kable(summary(working_data %>% select(c("br010_mod", "chronic_mod", "isced1997_r", "country_mod", "eurod"))))
+knitr::kable(summary(working_data %>% select(c("co007_", "age", "bmi"))))
 ```
 
-```{r Box-Plots}
 
-boxplot(bmi ~ country_mod, data = working_data )
+The data above contains NAs as we filter this out while constructing the male and female models. 
 
-boxplot(bmi ~ adla, data = working_data)
 
+
+```{r Box-Plots-countries, fig.align='center', fig.height=4, fig.width=6, fig.cap="BMI varying across Countries"}
+# Box plots to show how BMI varies across countries
+boxplot(bmi ~ country_mod, data = working_data, xlab = "Countries", ylab = "BMI")
 ```
 
-From the boxplots, it is evident that although there isn't a major difference in the value of BMI in each country, there is a difference in the range of values. Austria and Germany seem to have a larger range of values than Netherlands and Sweden. It is also evident that there is not a large amount of variation in the BMI of those who have high mobility and those who have low mobility. However, it is worth noting that there is a larger range of values of BMI for those who have high mobility.  
 
-The initial model without separating the data by sex is shown below with its model assumptions.
+```{r Box-Plots-adla, fig.height=4, fig.width=6, fig.cap="BMI varying with Activities of Daily Living"}
+# Box plot to show how BMI varies with Daily living activities
+boxplot(bmi ~ adla, data = working_data, 
+        xlab = "Activities of Daily Living index", ylab = "BMI")
+```
 
-```{r Model}
+From the boxplots in Figures 1 and 2, it is evident that although there isn't a major difference in the value of BMI in each country, there is a difference in the range of values. Austria and Germany seem to have a larger range of values than Netherlands and Sweden. It is also evident that there is not a large amount of variation in the BMI of those who have high mobility and those who have low mobility. However, it is worth noting that there is a larger range of values of BMI for those who have high mobility.  
+
+The model assumptions of the initial model without separating the data by sex is displayed in Figure 2.
+
+```{r Main-Model, fig.height=5.5, fig.width=6.5, fig.align='center', fig.cap="Checking Model Assumptions for Defined Model"}
+# Define model formula that applies to both will be applied to both males and females
 mod <- bmi ~ . + country_mod:dn004_mod + mother_alive:age + female:chronic_mod +
-
   female:adla + female:br010_mod + br015_:age + ever_smoked:co007_ +
-
   ever_smoked:maxgrip + ever_smoked:sphus + hhsize:adla + ch001_:br010_mod +
-
   adla:age + br010_mod:age
 
+# Define model
 fit <- lm(mod, data = working_data)
 
-par(mfrow = c(2,2))
+# Display model assumptions through residuals
+par(mfrow = c(2, 2))
 plot(fit)
 ```
 
@@ -250,46 +296,77 @@ plot(fit)
 
 The residuals vs fitted plot shows a constant line at zero, justifying the assumption that the expectation is zero. The Normal Q-Q plot is positively skewed, suggesting that the model may be over-fitted. The Scale-Location plot shows only a very slight upwards trend, suggesting that the assumption of a constant variance is not far-fetched. The residuals vs leverage plot shows no data points with high residuals and high leverage, and most of the data points are very close to zero, suggesting that they all have a very similar impact on the model.
 
-The model summaries for both models are shown below.
 
-```{r Sex-model, echo=FALSE}
-sex_mod <- bmi ~ . + country_mod:dn004_mod + mother_alive:age + br015_:age + 
-  
-  ever_smoked:co007_ + adla:age + br010_mod:age +
-  
-  ever_smoked:maxgrip + ever_smoked:sphus + hhsize:adla + ch001_:br010_mod
+
+```{r model-male-female, echo=FALSE}
+# Define the model formula for each sex
+# Note: this model does not include the interaction terms that were in the main
+# model as this is applied to each sex separately
+sex_mod <- bmi ~ . + country_mod:dn004_mod + mother_alive:age + br015_:age +
+  ever_smoked:co007_ + adla:age + br010_mod:age + ever_smoked:maxgrip + 
+  ever_smoked:sphus + hhsize:adla + ch001_:br010_mod
 ```
 
+We now look at the model applied to males and females separately. The model summaries for both models are shown below after model selection.
+
+\newpage
+
+# Model for Males
 ```{r Sex-model-male, include=FALSE}
+# Subset the data to choose only male observations
 male_data <- working_data %>%
   filter(female == "No") %>%
   mutate(female = NULL)
+
+# Remove all the NA observations and fit a model to the data
 fit_male <- lm(sex_mod, data = na.omit(male_data))
+
+# Perform model selection
 better_male_fit <- step(fit_male)
+
+# Round the data in the summary of coefficients to 2 d.p.
+sum_better_male <- summary(better_male_fit)
+sum_better_male$coefficients <- round(sum_better_male$coefficients, 2)
 ```
 
 
-```{r male summary, echo=FALSE}
-summary(better_male_fit)
+```{r male summary, out.width="100%"}
+# Display summary statistics of model for males
+options(width = 300)
+sum_better_male
 ```
+ 
+ 
+# Model for Females
 
 
 ```{r Sex-model-female, include=FALSE}
+# Subset the data to choose only female observations
 female_data <- working_data %>%
   filter(female == "Yes") %>%
   mutate(female = NULL)
+
+# Remove all the NA observations and fit a model to the data
 fit_female <- lm(sex_mod, data = na.omit(female_data))
+
+# Perform model selection
 better_female_fit <- step(fit_female)
+
+# Round the data in the summary of coefficients to 2 d.p.
+sum_better_female <- summary(better_female_fit)
+sum_better_female$coefficients <- round(sum_better_female$coefficients, 2)
 ```
 
 
 ```{r female-summary, echo=FALSE}
-summary(better_female_fit)
+# Display summary statistics of model for females
+options(width = 300)
+sum_better_female
 ```
 
 After model selection, some explanatory variables for both the male and female models were removed, with there now being 18 common variables to both models, 6 and 7 variables being exclusive to males and females respectively.  The relationship between BMI and each of the variables for both males and females is shown in the tables below, where a positive or negative relationship shows that the value of the variable is proportional or inversely proportional respectively to the value of BMI. “Varying for different levels” suggests that each level of the variable may have a different relationship with BMI. 
 
-\begin{table}[h!]
+\begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|c|p{4cm}|p{6cm}|}
     \hline
@@ -337,7 +414,7 @@ After model selection, some explanatory variables for both the male and female m
 \end{table}
 
 
-\begin{table}[h!]
+\begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|p{4cm}|p{6cm}|}
     \hline
@@ -360,7 +437,7 @@ After model selection, some explanatory variables for both the male and female m
     \label{tab:male}
 \end{table}
 
-\begin{table}[h!]
+\begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|p{4cm}|p{6cm}|}
     \hline
@@ -389,65 +466,107 @@ Some variables did not show a very significant relationship with BMI, for exampl
 
 Corresponding to the tables above, the boxplots below help visualise the relationship between BMI and some of the explanatory variables.
 
-```{r boxplots-analysis}
-chronic_plot <- ggplot(na.omit(working_data) %>% select(c(bmi, female, chronic_mod)) %>%
-         group_by("female"), 
-       aes(y=bmi, x=chronic_mod)) +
-  geom_boxplot(aes(fill = female)) +
-  scale_fill_discrete(name = "Sex", labels = c("Male", "Female")) 
+```{r boxplot-analysis}
+# Plot potential risk factors against BMI for males and females separately
 
-adla_plot <- ggplot(na.omit(working_data) %>% select(c(bmi, female, adla)) %>%
-         group_by("female"), 
-       aes(y=bmi, x=adla)) +
+# Number of chronic diseases
+chronic_plot <- ggplot(
+  na.omit(working_data) %>% select(c(bmi, female, chronic_mod)) %>%
+    group_by("female"),
+  aes(y = bmi, x = chronic_mod)
+) +
   geom_boxplot(aes(fill = female)) +
+  xlab("Number of chronic diseases") +
+  ylab("BMI") +
   scale_fill_discrete(name = "Sex", labels = c("Male", "Female"))
 
-br010_plot <- ggplot(na.omit(working_data) %>% select(c(bmi, female, br010_mod)) %>%
-         group_by("female"), 
-       aes(y=bmi, x=br010_mod)) +
+# Daily living activities
+adla_plot <- ggplot(
+  na.omit(working_data) %>% select(c(bmi, female, adla)) %>%
+    group_by("female"),
+  aes(y = bmi, x = adla)
+) +
   geom_boxplot(aes(fill = female)) +
-  scale_fill_discrete(name = "Sex", labels = c("Male", "Female")) 
+  xlab("Activities of Daily living") +
+  ylab("BMI") +
+  scale_fill_discrete(name = "Sex", labels = c("Male", "Female"))
 
-maxgrip_plot <-ggplot(na.omit(working_data) %>% select(c(bmi, female, maxgrip)) %>%
-         group_by("female"), 
-       aes(y=bmi, x=maxgrip)) +
+# Drinking Behaviour
+br010_plot <- ggplot(
+  na.omit(working_data) %>% select(c(bmi, female, br010_mod)) %>%
+    group_by("female"),
+  aes(y = bmi, x = br010_mod)
+) +
   geom_boxplot(aes(fill = female)) +
-  scale_fill_discrete(name = "Sex", labels = c("Male", "Female")) 
+  xlab("Drinking Behaviour") +
+  ylab("BMI") +
+  scale_fill_discrete(name = "Sex", labels = c("Male", "Female"))
 
-sphus_plot <-ggplot(na.omit(working_data) %>% select(c(bmi, female, sphus)) %>%
-         group_by("female"), 
-       aes(y=bmi, x=sphus)) +
+# Maximum grip strength
+maxgrip_plot <- ggplot(
+  na.omit(working_data) %>% select(c(bmi, female, maxgrip)) %>%
+    group_by("female"),
+  aes(y = bmi, x = maxgrip)
+) +
   geom_boxplot(aes(fill = female)) +
-  scale_fill_discrete(name = "Sex", labels = c("Male", "Female")) 
+  xlab("Maximum grip strength") +
+  ylab("BMI") +
+  scale_fill_discrete(name = "Sex", labels = c("Male", "Female"))
 
-country_plot <-ggplot(na.omit(working_data) %>% select(c(bmi, female, country_mod)) %>%
-         group_by("female"), 
-       aes(y=bmi, x=country_mod)) +
+# Self-perceived health
+sphus_plot <- ggplot(
+  na.omit(working_data) %>% select(c(bmi, female, sphus)) %>%
+    group_by("female"),
+  aes(y = bmi, x = sphus)
+) +
   geom_boxplot(aes(fill = female)) +
-  scale_fill_discrete(name = "Sex", labels = c("Male", "Female")) 
+  xlab("Self-Perceived health") +
+  ylab("BMI") +
+  scale_fill_discrete(name = "Sex", labels = c("Male", "Female"))
 
-grid.arrange(chronic_plot, adla_plot, br010_plot, maxgrip_plot, sphus_plot, 
-             country_plot, nrow = 3)
-
+# Countries
+country_plot <- ggplot(
+  na.omit(working_data) %>% select(c(bmi, female, country_mod)) %>%
+    group_by("female"),
+  aes(y = bmi, x = country_mod)
+) +
+  geom_boxplot(aes(fill = female)) +
+  xlab("Countries") +
+  ylab("BMI") +
+  scale_fill_discrete(name = "Sex", labels = c("Male", "Female"))
 ```
 
-# COnclusion
+
+```{r present-boxplots-analysis, fig.height=8, fig.width=8, fig.cap="Possible risk factors of obsesity varying with BMI"}
+
+# Present plots together
+grid.arrange(chronic_plot, adla_plot, br010_plot, maxgrip_plot, sphus_plot,
+  country_plot,
+  nrow = 3, newpage = FALSE
+)
+```
+
+# Conclusion
 From the given data, there are some risk factors that affect both males and females, for example smoking habits, level of daily activity, number of chronic diseases, etc. However, some factors exclusively affect males, e.g. depression (EURO-D score) or their age in interaction with their daily activities. On the other hand, some factors exclusively affect females, e.g. number of children, or the amount of vigorous activities in interaction with their age.
 
 # Executive Summary
 When comparing the effect of different risk factors for males and females, it was evident that there is generally a difference in how each factor affects each sex. For example, males with a EURO-D score of 10 or higher were much more likely to have a smaller BMI than those who were less depressed, suggesting that depression may not have much of an impact on their BMI until it becomes significantly severe. On the other hand, there was no apparent relationship between BMI and severity of depression for females at all. The number of chronic illnesses that participants had from each sex seemed to increase their risk of obesity. In addition to this, participants who were generally more active and had a healthier lifestyle, and perceived themselves to be healthier may have a lower risk of being obese. Surprisingly, those who drank regularly had a lower chance of being obese. Participants from Austria and Germany generally had higher values of BMI on average than Netherlands and Sweden. Being able to make ends meet financially seemed to increase the risk of being obese for both males and females, with the risk being slightly higher for females. Some of this information is visually represented by the figures below.
 
 
-```{r echo=FALSE}
-co007_plot <- ggplot(na.omit(working_data) %>% select(c(bmi, female, co007_)) %>%
-         group_by("female"), 
-       aes(y=bmi, x=co007_)) +
+```{r echo=FALSE, fig.height=8, fig.width=8, fig.cap="Possible risk factors of obsesity"}
+# Ability to make ends meet
+co007_plot <- ggplot(
+  na.omit(working_data) %>% select(c(bmi, female, co007_)) %>%
+    group_by("female"),
+  aes(y = bmi, x = co007_)
+) +
   geom_boxplot(aes(fill = female)) +
   scale_fill_discrete(name = "Sex", labels = c("Male", "Female"))
 
-grid.arrange(co007_plot, adla_plot, br010_plot, maxgrip_plot, sphus_plot, 
-             country_plot, nrow = 3)
+# Present plots for executive summary
+grid.arrange(chronic_plot, adla_plot, br010_plot, sphus_plot,
+  co007_plot, country_plot,
+  nrow = 3
+)
+
 ```
-
-
-
